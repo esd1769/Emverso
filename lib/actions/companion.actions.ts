@@ -24,14 +24,14 @@ export const getAllCompanions = async ({ limit = 10, page = 1, subject, topic }:
 
     let query = supabase.from('companions').select('*, author');
 
-    if(subject && topic) {
-        query = query.ilike('subject', `%${subject}%`)
-            .or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`)
-    } else if(subject) {
-        query = query.ilike('subject', `%${subject}%`)
-    } else if(topic) {
+    if(subject) {
+        query = query.or(`topic.ilike.%${subject}%,name.ilike.%${subject}%`)
+    }
+
+    if(topic) {
         query = query.or(`topic.ilike.%${topic}%,name.ilike.%${topic}%`)
     }
+
 
     query = query.range((page - 1) * limit, page * limit - 1);
 

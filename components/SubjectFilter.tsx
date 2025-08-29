@@ -17,28 +17,25 @@ const SubjectFilter = () => {
 
     const router = useRouter();
     const searchParams=useSearchParams();
-    const query= searchParams.get('subject') || '';
+    const query= searchParams.get('subject') || 'all';
     const [subject,setSubject] = useState(query);
+
     useEffect(() => {
 
         let newUrl='';
-        if  (subject==='all')  {
+        if (!subject || subject==='all') {
             newUrl = removeKeysFromUrlQuery({
                 params: searchParams.toString(),
                 keysToRemove: ["subject"],
             });
-
-            //router.push(newUrl, { scroll: false });
-        }
-        else {
+        } else {
             newUrl = formUrlQuery({
                 params: searchParams.toString(),
                 key: "subject",
                 value: subject,
             });
-
-            //router.push(newUrl, { scroll: false });
         }
+
         router.push(newUrl, { scroll: false });
 
 
